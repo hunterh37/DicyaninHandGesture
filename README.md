@@ -56,10 +56,7 @@ struct ContentView: View {
             let box = ModelEntity(mesh: .generateBox(size: 0.3))
             content.add(box)
         } update: { content in
-            // Update your 3D content based on gesture state
-            if let box = content.entities.first as? ModelEntity {
-                box.scale = isPinching ? [0.5, 0.5, 0.5] : [1, 1, 1]
-            }
+            // Your update logic here
         }
         .task {
             // Start hand tracking when the view appears
