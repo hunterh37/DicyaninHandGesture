@@ -2,25 +2,24 @@
 import PackageDescription
 
 let package = Package(
-    name: "HandGestureKit",
+    name: "DicyaninHandGesture",
     platforms: [
-        .iOS(.v17),
         .visionOS(.v1)
     ],
     products: [
         .library(
-            name: "HandGestureKit",
-            targets: ["HandGestureKit"]),
+            name: "DicyaninHandGesture",
+            targets: ["DicyaninHandGesture"]),
     ],
     dependencies: [
         .package(path: "DicyaninARKitSession")
     ],
     targets: [
         .target(
-            name: "HandGestureKit",
+            name: "DicyaninHandGesture",
             dependencies: ["DicyaninARKitSession"]),
         .testTarget(
-            name: "HandGestureKitTests",
-            dependencies: ["HandGestureKit"]),
+            name: "DicyaninHandGestureTests",
+            dependencies: ["DicyaninHandGesture"]),
     ]
 ) 

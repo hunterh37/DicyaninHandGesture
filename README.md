@@ -1,11 +1,28 @@
-# HandGestureKit
+# DicyaninHandGesture
 
-A Swift package for detecting hand gestures in visionOS and iOS applications using ARKit's hand tracking capabilities.
+A Swift package that provides a clean, reusable interface for hand gesture detection in visionOS applications.
+
+## Overview
+
+DicyaninHandGesture simplifies working with ARKit's hand tracking capabilities by providing:
+- A clean, reusable interface for hand gesture detection
+- Support for multiple concurrent gestures
+- Hand-specific detection (left/right hand)
+- Customizable gesture parameters
+- Dominant/non-dominant hand support
+
+## Dependencies
+
+DicyaninHandGesture depends on [DicyaninARKitSession](https://github.com/yourusername/DicyaninARKitSession), a package that manages ARKit sessions and hand tracking updates. This separation of concerns is important because:
+
+1. **Resource Management**: ARKit sessions are resource-intensive and should be shared across multiple packages
+2. **Consistency**: Ensures all packages receive the same hand tracking data
+3. **Performance**: Prevents multiple ARKit sessions from running simultaneously
+4. **Modularity**: Allows other packages to use hand tracking without implementing their own session management
 
 ## Requirements
 
-- iOS 17.0+ / visionOS 1.0+
-- Xcode 15.0+
+- visionOS 1.0+
 - Swift 5.9+
 
 ## Installation
@@ -16,7 +33,7 @@ Add the following to your `Package.swift` file:
 
 ```swift
 dependencies: [
-    .package(url: "YOUR_REPOSITORY_URL", from: "1.0.0")
+    .package(url: "https://github.com/yourusername/DicyaninHandGesture.git", from: "1.0.0")
 ]
 ```
 
@@ -25,60 +42,50 @@ dependencies: [
 ### Basic Setup
 
 ```swift
-import HandGestureKit
+import DicyaninHandGesture
+import SwiftUI
+import RealityKit
 
-class YourViewController: UIViewController {
-    private let handGestureDetector = HandGestureDetector()
+struct ContentView: View {
+    @StateObject private var gestureDetector = HandGestureDetector.shared
+    @State private var isPinching = false
     
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        setupHandTracking()
-    }
-    
-    private func setupHandTracking() {
-        Task {
-            do {
-                try await handGestureDetector.start()
-            } catch {
-                print("Failed to start hand tracking: \(error)")
+    var body: some View {
+        RealityView { content in
+            // Add your 3D content here
+            let box = ModelEntity(mesh: .generateBox(size: 0.3))
+            content.add(box)
+        } update: { content in
+            // Update your 3D content based on gesture state
+            if let box = content.entities.first as? ModelEntity {
+                box.scale = isPinching ? [0.5, 0.5, 0.5] : [1, 1, 1]
+            }
+        }
+        .task {
+            // Start hand tracking when the view appears
+            try? await gestureDetector.start()
+        }
+        .onDisappear {
+            // Stop hand tracking when the view disappears
+            gestureDetector.stop()
+        }
+        .onAppear {
+            // Set up gesture detection
+            let pinchGesture = PinchGesture(handSide: .right)
+            gestureDetector.addGesture(pinchGesture) { isActive in
+                isPinching = isActive
             }
         }
     }
 }
 ```
 
-### Detecting Pinch Gestures
+### Available Gestures
 
-```swift
-// Check for pinch gesture on the dominant hand
-if let dominantHand = handGestureDetector.getDominantHand() {
-    let isPinching = handGestureDetector.checkForPinchGesture(hand: dominantHand)
-    if isPinching {
-        // Handle pinch gesture
-    }
-}
-```
-
-### Getting Finger Positions
-
-```swift
-if let dominantHand = handGestureDetector.getDominantHand(),
-   let positions = handGestureDetector.getFingerPositions(for: dominantHand) {
-    // Access positions for specific fingers
-    if let indexFingerPosition = positions[.indexFingerTip] {
-        // Use index finger position
-    }
-}
-```
-
-## Features
-
-- Hand tracking initialization and management
-- Pinch gesture detection
-- Finger position tracking
-- Support for both dominant and non-dominant hands
-- Thread-safe hand tracking updates
+- `PinchGesture`: Detects pinching between thumb and index finger
+- `GrabGesture`: Detects when all fingers are curled
+- `PointGesture`: Detects when index finger is extended while others are curled
 
 ## License
 
-[Your License Here] 
+Copyright © 2025 Dicyanin Labs. All rights reserved. 
