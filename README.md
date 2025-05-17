@@ -13,7 +13,7 @@ DicyaninHandGesture simplifies working with ARKit's hand tracking capabilities b
 
 ## Dependencies
 
-DicyaninHandGesture depends on [DicyaninARKitSession](https://github.com/yourusername/DicyaninARKitSession), a package that manages ARKit sessions and hand tracking updates. This separation of concerns is important because:
+DicyaninHandGesture depends on  [DicyaninHandSessionManager](https://github.com/hunterh37/DicyaninHandSessionManager), a package that manages ARKit sessions and hand tracking updates. This separation of concerns is important because:
 
 1. **Resource Management**: ARKit sessions are resource-intensive and should be shared across multiple packages
 2. **Consistency**: Ensures all packages receive the same hand tracking data
