@@ -77,6 +77,14 @@ struct ContentView: View {
 }
 ```
 
+### Required Setup
+
+1. Add the following key to your Info.plist file to request hand tracking permissions:
+```xml
+<key>NSHandsTrackingUsageDescription</key>
+<string>This app needs access to hand tracking to enable hand interaction features.</string>
+```
+
 ### Available Gestures
 
 - `PinchGesture`: Detects pinching between thumb and index finger
