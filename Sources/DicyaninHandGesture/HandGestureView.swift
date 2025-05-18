@@ -8,7 +8,7 @@ import SwiftUI
 import RealityKit
 import ARKit
 
-/// A SwiftUI view that demonstrates hand gesture detection
+/// A SwiftUI view that demonstrates hand gesture detection in visionOS
 ///
 /// This view provides a default implementation for testing and demonstrating
 /// hand gesture detection. It includes:
@@ -24,6 +24,12 @@ import ARKit
 ///     }
 /// }
 /// ```
+///
+/// This view is designed to be presented in an ImmersiveSpace. For custom implementations,
+/// you can use this as a reference for creating your own RealityView with hand gesture support.
+/// When integrating with your app's AR content, wrap this RealityView in a ZStack to layer it
+/// with other AR elements and UI components.
+///
 public struct HandGestureView: View {
     @StateObject private var detector = HandGestureDetector.shared
     @State private var activeGestures: [String: Bool] = [:]
@@ -96,9 +102,9 @@ public struct HandGestureView: View {
                 }
                 
                 if activeGestures["Finger Distance"] == true {
-                  //  box.model?.materials = [SimpleMaterial(color: .red, isMetallic: true)]
+                    box.components[ModelComponent.self]?.materials = [SimpleMaterial(color: .red, isMetallic: true)]
                 } else {
-                   // box.model?.materials = [SimpleMaterial(color: .blue, isMetallic: true)]
+                    box.components[ModelComponent.self]?.materials = [SimpleMaterial(color: .blue, isMetallic: true)]
                 }
             }
         }
