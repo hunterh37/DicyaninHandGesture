@@ -1,0 +1,11 @@
+.build/
+.build/**
+Packages/
+*.xcworkspace
+xcuserdata/
+DerivedData/
+.macos.plist
+.ios.plist
+*.swp
+*.swo
+.DS_Store
