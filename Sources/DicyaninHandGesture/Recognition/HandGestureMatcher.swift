@@ -31,7 +31,7 @@ public final class HandGestureMatcher: @unchecked Sendable {
     /// Scores every registered gesture against a live pose, closest first.
     public func scores(for live: HandGesturePose) -> [Score] {
         gestures.compactMap { g in
-            guard let dev = g.pose.deviation(to: live) else { return nil }
+            guard let dev = g.pose.matchDeviation(to: live) else { return nil }
             let chiralityOK = live.chirality == g.pose.chirality
                 || g.pose.chirality == .either
                 || live.chirality == .either

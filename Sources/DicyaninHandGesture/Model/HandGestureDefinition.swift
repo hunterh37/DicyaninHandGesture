@@ -45,7 +45,7 @@ public struct HandGestureDefinition: Codable, Identifiable, Equatable, Sendable 
         guard live.chirality == pose.chirality || pose.chirality == .either || live.chirality == .either else {
             return false
         }
-        guard let dev = pose.deviation(to: live) else { return false }
+        guard let dev = pose.matchDeviation(to: live) else { return false }
         return dev <= threshold
     }
 
